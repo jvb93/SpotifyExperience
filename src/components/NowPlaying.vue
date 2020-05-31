@@ -3,7 +3,7 @@
     <q-card
       flat
       bordered
-      v-if="currentTrack && currentTrackFeatures"
+      v-if="accessTokenIsValid && currentTrack && currentTrackFeatures"
       class="q-ma-lg"
     >
       <q-card-section>
@@ -19,6 +19,11 @@
         </div>
       </q-card-section>
     </q-card>
+    <q-btn
+      v-if="!accessTokenIsValid"
+      @click="window.location = '~/'"
+      label="Refresh Session"
+    />
   </q-page>
 </template>
 
@@ -34,10 +39,16 @@ export default {
   data() {
     return {
       currentTrack: null,
-      currentTrackFeatures: null
+      currentTrackFeatures: null,
+      poller: null,
+      accessTokenIsValid: true
     };
   },
   methods: {
+    stopPolling() {
+      this.accessTokenIsValid = false;
+      clearInterval(this.poller);
+    },
     getCurrentTrack() {
       axios
         .get("https://api.spotify.com/v1/me/player/currently-playing", {
@@ -46,6 +57,9 @@ export default {
         .then(response => {
           this.currentTrack = response.data;
           this.getAudioFeaturesForTrack(this.currentTrack.item.id);
+        })
+        .catch(() => {
+          this.stopPolling();
         });
     },
     getAudioFeaturesForTrack(trackId) {
@@ -55,13 +69,16 @@ export default {
         })
         .then(response => {
           this.currentTrackFeatures = response.data;
+        })
+        .catch(() => {
+          this.stopPolling();
         });
     }
   },
   created() {
     this.getCurrentTrack();
 
-    setInterval(() => {
+    this.poller = setInterval(() => {
       this.getCurrentTrack();
     }, 10000);
   }
