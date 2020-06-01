@@ -6,7 +6,7 @@
     />
     <div class="text-h6">{{ track.name }}</div>
     <div class="text-subtitle2">
-      {{ track.artists[0].name }}
+      {{ artistNames(track) }}
     </div>
   </div>
 </template>
@@ -17,6 +17,12 @@ export default {
     track: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    artistNames(track) {
+      var justNames = track.artists.map(x => x.name);
+      return justNames.join(", ");
     }
   }
 };

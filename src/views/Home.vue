@@ -1,7 +1,18 @@
 <template>
   <div class="home">
     <NowPlaying v-if="$store.state.accessToken" />
-    <q-btn v-else @click="authorize()" label="authorize" />
+    <div v-else class="row items-center fullscreen">
+      <div class="col text-center">
+        <q-btn
+          @click="authorize()"
+          align="between"
+          class="btn-fixed-width"
+          color="positive"
+          label="Authorize with Spotify"
+          icon="lock"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
