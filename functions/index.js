@@ -19,7 +19,8 @@ exports.authenticate = functions.https.onRequest((request, response) => {
     }`;
 
     let spotifyHeaders = {
-      authorization: `Basic ${btoa(concatTokens)}`
+      authorization: `Basic ${Buffer.from(concatTokens).toString("base64")}`,
+      "content-type": `application-json`
     };
 
     axios
