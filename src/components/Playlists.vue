@@ -96,6 +96,7 @@ export default {
 
   data() {
     return {
+      authorizationCode: "",
       accessToken: "",
       playlists: [],
       playlist: null
@@ -123,7 +124,7 @@ export default {
     authorize() {
       var redirectUrl = "http://localhost:8080";
       window.open(
-        `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_SPOTIFYCLIENTID}&redirect_uri=${redirectUrl}&scope=user-read-private%20user-read-email%20playlist-read-private&response_type=token&state=123`
+        `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_SPOTIFYCLIENTID}&redirect_uri=${redirectUrl}&scope=user-read-private%20user-read-email%20playlist-read-private&response_type=code&state=123`
       );
     }
   },
