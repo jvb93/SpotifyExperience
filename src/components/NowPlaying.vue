@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page v-if="$store.state.accessToken">
     <q-card
       flat
       bordered
@@ -19,11 +19,6 @@
         </div>
       </q-card-section>
     </q-card>
-    <q-btn
-      v-if="!accessTokenIsValid"
-      @click="window.location = '~/'"
-      label="Refresh Session"
-    />
   </q-page>
 </template>
 
