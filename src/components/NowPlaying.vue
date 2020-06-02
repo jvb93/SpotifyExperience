@@ -10,9 +10,22 @@
         >
           <q-card-section>
             <div class="row">
-              <div class="col-sm-12 col-md-4">
-                <div class="text-h5">Now Playing</div>
-                <track-info :track="currentTrack.item" />
+              <div class="col-sm-12 col-md-4 text-center">
+                <div class="text-h5 text-left">Now Playing</div>
+                <div class="row">
+                  <div class="col">
+                    <track-info :track="currentTrack.item" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <track-control
+                      :track-id="currentTrack.item.id"
+                      :is-playing="currentTrack.is_playing"
+                      @refresh="getCurrentTrack"
+                    />
+                  </div>
+                </div>
               </div>
               <div class="col-sm-12 col-md-8">
                 <div class="text-h5">Track Analysis</div>
@@ -64,11 +77,13 @@
 import axios from "axios";
 import TrackAnalysis from "@/components/Track/TrackAnalysis";
 import TrackInfo from "@/components/Track/TrackInfo";
+import TrackControl from "@/components/Track/TrackControl";
 import { mapMutations } from "vuex";
 export default {
   components: {
     TrackAnalysis,
-    TrackInfo
+    TrackInfo,
+    TrackControl
   },
   data() {
     return {

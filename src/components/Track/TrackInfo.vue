@@ -1,12 +1,22 @@
 <template>
   <div>
-    <img
-      :src="track.album.images[0].url"
-      style="max-height:300px; max-width: 300px; width: auto; height: auto;"
-    />
-    <div class="text-h6">{{ track.name }}</div>
-    <div class="text-subtitle2">
-      {{ artistNames(track) }}
+    <div class="row">
+      <div class="col">
+        <q-img
+          :src="track.album.images[0].url"
+          transition="fade"
+          class="rounded-borders"
+          style="height: 300px; max-width:300px;"
+        ></q-img>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="text-h6">{{ track.name }}</div>
+        <div class="text-subtitle2">
+          {{ artistNames(track) }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
