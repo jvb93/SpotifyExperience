@@ -10,7 +10,7 @@
         >
           <q-card-section>
             <div class="row">
-              <div class="col-sm-12 col-md-4 text-center">
+              <div class="col-xs-12 col-md-4 text-center q-pa-md">
                 <div class="text-h5 text-left">Now Playing</div>
                 <div class="row">
                   <div class="col">
@@ -27,7 +27,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-12 col-md-8">
+              <div class="col-xs-12 col-md-8 q-pa-md">
                 <div class="text-h5">Track Analysis</div>
                 <track-analysis :features="currentTrackFeatures" />
               </div>

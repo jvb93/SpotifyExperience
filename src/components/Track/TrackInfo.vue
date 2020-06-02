@@ -6,7 +6,6 @@
           :src="track.album.images[0].url"
           transition="fade"
           class="rounded-borders"
-          style="height: 300px; max-width:300px;"
         ></q-img>
       </div>
     </div>
