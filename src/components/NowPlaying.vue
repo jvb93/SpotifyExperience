@@ -124,6 +124,9 @@ export default {
           this.genius.searchResults = response.data.response.hits;
           if (this.genius.searchResults && this.genius.searchResults.length) {
             this.getGeniusSongInfo(this.genius.searchResults[0].result.id);
+          } else {
+            this.genius.song = null;
+            this.genius.artist = null;
           }
         });
     },
