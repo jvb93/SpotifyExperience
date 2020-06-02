@@ -1,5 +1,5 @@
 # spotifyexperience
-
+![Node.js CI](https://github.com/jvb93/SpotifyExperience/workflows/Node.js%20CI/badge.svg)
 ## Project setup
 ```
 npm install
