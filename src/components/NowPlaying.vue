@@ -30,6 +30,7 @@
               <div class="col-xs-12 col-md-8 q-pa-md">
                 <track-list
                   :tracks="currentAlbumTracks"
+                  :now-playing-id="currentTrack.item.id"
                   :title="currentTrack.item.album.name"
                 />
               </div>
@@ -59,7 +60,10 @@
           <div class="col">
             <q-card flat bordered class="q-ma-lg">
               <q-card-section>
-                <artist-info :id="currentTrack.item.artists[0].id" />
+                <artist-info
+                  :id="currentTrack.item.artists[0].id"
+                  :now-playing-id="currentTrack.item.id"
+                />
               </q-card-section>
             </q-card>
           </div>

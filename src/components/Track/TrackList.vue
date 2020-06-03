@@ -8,6 +8,15 @@
     :pagination="initialPagination"
     row-key="id"
   >
+    <template v-slot:body-cell-id="props">
+      <q-td :props="props" auto-width>
+        <q-spinner-audio
+          v-if="props.value === nowPlayingId"
+          color="primary"
+          size="1em"
+        />
+      </q-td>
+    </template>
     <template v-slot:body-cell-uri="props">
       <q-td :props="props">
         <div>
@@ -42,6 +51,13 @@ export default {
       },
       columns: [
         {
+          name: "id",
+          required: true,
+          align: "right",
+          field: row => row.id,
+          format: val => `${val}`
+        },
+        {
           name: "name",
           required: true,
           label: "Track Name",
@@ -56,8 +72,7 @@ export default {
           label: "",
           align: "right",
           field: row => row.uri,
-          format: val => `${val}`,
-          sortable: true
+          format: val => `${val}`
         }
       ]
     };

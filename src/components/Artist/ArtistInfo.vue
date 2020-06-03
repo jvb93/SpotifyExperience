@@ -39,7 +39,11 @@
         </div>
       </div>
     </div>
-    <track-list title="Top tracks" :tracks="popularTracks" />
+    <track-list
+      title="Top tracks"
+      :tracks="popularTracks"
+      :now-playing-id="nowPlayingId"
+    />
   </div>
 </template>
 
@@ -54,6 +58,9 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    nowPlayingId: {
+      type: String
     }
   },
   data() {
