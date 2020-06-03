@@ -55,14 +55,27 @@
         class="col-sm-12 col-md-6"
         v-if="currentTrack && currentTrackFeatures"
       >
-        <q-card flat bordered class="q-ma-lg">
-          <q-card-section>
-            <div class="text-h5 font-anton text-uppercase text-italic">
-              Track Analysis
-            </div>
-            <track-analysis :features="currentTrackFeatures" />
-          </q-card-section>
-        </q-card>
+        <div class="row">
+          <div class="col">
+            <q-card flat bordered class="q-ma-lg">
+              <q-card-section>
+                <artist-info :id="currentTrack.item.artists[0].id" />
+              </q-card-section>
+            </q-card>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <q-card flat bordered class="q-ma-lg">
+              <q-card-section>
+                <div class="text-h5 font-anton text-uppercase text-italic">
+                  Track Analysis
+                </div>
+                <track-analysis :features="currentTrackFeatures" />
+              </q-card-section>
+            </q-card>
+          </div>
+        </div>
       </div>
       <div class="col-sm-12 col-md-6" v-if="genius.song">
         <q-card flat bordered class="q-ma-lg">
@@ -111,20 +124,24 @@ import axios from "axios";
 import TrackAnalysis from "@/components/Track/TrackAnalysis";
 import TrackInfo from "@/components/Track/TrackInfo";
 import TrackControl from "@/components/Track/TrackControl";
-import TrackList from "@/components/Album/TrackList";
+import TrackList from "@/components/Track/TrackList";
+import ArtistInfo from "@/components/Artist/ArtistInfo";
 import { mapMutations } from "vuex";
 export default {
   components: {
     TrackAnalysis,
     TrackInfo,
     TrackControl,
-    TrackList
+    TrackList,
+    ArtistInfo
   },
   data() {
     return {
       currentTrack: null,
       currentTrackFeatures: null,
       currentAlbumTracks: [],
+      currentArtist: null,
+      currentArtistPopularTracks: [],
       poller: null,
       genius: {
         searchResults: [],
@@ -168,6 +185,7 @@ export default {
       this.getTracksOnAlbum(spotifyTrack.item.album.id);
       this.geniusSearch(spotifyTrack.item);
     },
+
     geniusSearch(track) {
       var q = `${track.name} ${track.artists[0].name}`;
       axios

@@ -75,10 +75,11 @@ export default {
           }
         )
         .then(() => {
+          var track = this.tracks.find(x => x.uri == trackId);
           this.$q.notify({
             progress: true,
             color: "accent",
-            message: "Added to Queue",
+            message: `Added "${track.name}" to your play queue`,
             position: "top",
             timeout: 2500
           });
@@ -93,6 +94,9 @@ export default {
     tracks: {
       type: Array,
       required: true
+    },
+    nowPlayingId: {
+      type: String
     }
   }
 };
