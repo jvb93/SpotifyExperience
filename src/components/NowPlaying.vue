@@ -1,12 +1,12 @@
 <template>
   <q-page v-if="$store.state.accessToken">
+    <h4 class="text-center q-mb-none">Now Playing</h4>
     <div class="row" v-if="currentTrack && currentTrackFeatures">
       <div class="col">
         <q-card flat bordered class="q-ma-lg">
           <q-card-section>
             <div class="row">
               <div class="col-xs-12 col-md-4 text-center q-pa-md">
-                <div class="text-h5 text-left">Now Playing</div>
                 <div class="row">
                   <div class="col">
                     <track-info :track="currentTrack.item" />
@@ -23,8 +23,10 @@
                 </div>
               </div>
               <div class="col-xs-12 col-md-8 q-pa-md">
-                <div class="text-h5">Track Analysis</div>
-                <track-analysis :features="currentTrackFeatures" />
+                <track-list
+                  :tracks="currentAlbumTracks"
+                  :title="currentTrack.item.album.name"
+                />
               </div>
             </div>
           </q-card-section>
@@ -41,8 +43,19 @@
       </div>
     </div>
 
-    <div class="row" v-if="genius.song">
-      <div class="col-sm-12 col-md-6">
+    <div class="row">
+      <div
+        class="col-sm-12 col-md-6"
+        v-if="currentTrack && currentTrackFeatures"
+      >
+        <q-card flat bordered class="q-ma-lg">
+          <q-card-section>
+            <div class="text-h5">Track Analysis</div>
+            <track-analysis :features="currentTrackFeatures" />
+          </q-card-section>
+        </q-card>
+      </div>
+      <div class="col-sm-12 col-md-6" v-if="genius.song">
         <q-card flat bordered class="q-ma-lg">
           <q-card-section v-if="genius.song.description.html != '<p>?</p>'">
             <div class="text-h6">Description</div>
@@ -85,17 +98,20 @@ import axios from "axios";
 import TrackAnalysis from "@/components/Track/TrackAnalysis";
 import TrackInfo from "@/components/Track/TrackInfo";
 import TrackControl from "@/components/Track/TrackControl";
+import TrackList from "@/components/Album/TrackList";
 import { mapMutations } from "vuex";
 export default {
   components: {
     TrackAnalysis,
     TrackInfo,
-    TrackControl
+    TrackControl,
+    TrackList
   },
   data() {
     return {
       currentTrack: null,
       currentTrackFeatures: null,
+      currentAlbumTracks: [],
       poller: null,
       genius: {
         searchResults: [],
@@ -136,6 +152,7 @@ export default {
     },
     getAdditionalTrackInformation(spotifyTrack) {
       this.getAudioFeaturesForTrack(spotifyTrack.item.id);
+      this.getTracksOnAlbum(spotifyTrack.item.album.id);
       this.geniusSearch(spotifyTrack.item);
     },
     geniusSearch(track) {
@@ -164,6 +181,16 @@ export default {
         .then(response => {
           this.genius.song = response.data.response.song;
         });
+    },
+    getTracksOnAlbum(albumId) {
+      axios
+        .get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, {
+          headers: { authorization: `Bearer ${this.$store.state.accessToken}` }
+        })
+        .then(response => {
+          this.currentAlbumTracks = response.data.items;
+        })
+        .catch(() => {});
     },
     getAudioFeaturesForTrack(trackId) {
       axios
