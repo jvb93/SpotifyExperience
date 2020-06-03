@@ -1,6 +1,6 @@
 <template>
   <q-page v-if="$store.state.accessToken">
-    <h4 class="text-center q-mb-none">Now Playing</h4>
+    <h4 class="text-center q-mb-none" v-if="currentTrack">Now Playing</h4>
     <div class="row" v-if="currentTrack && currentTrackFeatures">
       <div class="col">
         <q-card flat bordered class="q-ma-lg">
