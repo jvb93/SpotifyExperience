@@ -1,13 +1,8 @@
 <template>
   <q-page v-if="$store.state.accessToken">
-    <div class="row">
+    <div class="row" v-if="currentTrack && currentTrackFeatures">
       <div class="col">
-        <q-card
-          flat
-          bordered
-          v-if="accessTokenIsValid && currentTrack && currentTrackFeatures"
-          class="q-ma-lg"
-        >
+        <q-card flat bordered class="q-ma-lg">
           <q-card-section>
             <div class="row">
               <div class="col-xs-12 col-md-4 text-center q-pa-md">
@@ -36,13 +31,25 @@
         </q-card>
       </div>
     </div>
+    <div class="row justify-center window-height items-center" v-else>
+      <div class="text-center">
+        <q-spinner-audio color="primary" size="3em" />
+        <div class="text-h5">Looking for Audio...</div>
+        <div class="text-subtitle1">
+          Please note only music is supported at this time
+        </div>
+      </div>
+    </div>
 
     <div class="row" v-if="genius.song">
       <div class="col-sm-12 col-md-6">
         <q-card flat bordered class="q-ma-lg">
           <q-card-section v-if="genius.song.description.html != '<p>?</p>'">
             <div class="text-h6">Description</div>
-            <div v-html="genius.song.description.html"></div>
+            <div
+              style="overflow-x: auto;"
+              v-html="genius.song.description.html"
+            ></div>
           </q-card-section>
           <q-card-section>
             <div class="text-h6">Facts</div>
@@ -90,7 +97,6 @@ export default {
       currentTrack: null,
       currentTrackFeatures: null,
       poller: null,
-      accessTokenIsValid: true,
       genius: {
         searchResults: [],
         song: null,
@@ -99,10 +105,8 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["setCurrentTrackId", "setAccessToken"]),
+    ...mapMutations(["setCurrentTrackId"]),
     stopPolling() {
-      this.accessTokenIsValid = false;
-      this.setAccessToken(null);
       clearInterval(this.poller);
     },
     getCurrentTrack() {
@@ -111,12 +115,19 @@ export default {
           headers: { authorization: `Bearer ${this.$store.state.accessToken}` }
         })
         .then(response => {
+          if (response.status === 204) {
+            return;
+          }
           if (response.data.currently_playing_type === "track") {
             this.currentTrack = response.data;
             if (this.currentTrack.item.id != this.$store.state.currentTrackId) {
               this.getAdditionalTrackInformation(this.currentTrack);
             }
             this.setCurrentTrackId(this.currentTrack.item.id);
+          } else {
+            this.currentTrack = null;
+            this.genius.song = null;
+            this.setCurrentTrackId(null);
           }
         })
         .catch(() => {
@@ -168,6 +179,8 @@ export default {
     }
   },
   created() {
+    this.currentTrack = null;
+    this.setCurrentTrackId(null);
     this.getCurrentTrack();
 
     this.poller = setInterval(() => {
