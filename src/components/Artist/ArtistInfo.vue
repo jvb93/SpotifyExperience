@@ -36,6 +36,7 @@
           >
             {{ genre }}
           </q-chip>
+          <div v-if="genius" v-html="genius.description.html"></div>
         </div>
       </div>
     </div>
@@ -66,7 +67,8 @@ export default {
   data() {
     return {
       popularTracks: [],
-      artist: null
+      artist: null,
+      genius: null
     };
   },
   methods: {
@@ -79,6 +81,35 @@ export default {
         })
         .then(response => {
           this.artist = response.data;
+        });
+    },
+    geniusSearch(q) {
+      axios
+        .get(
+          `https://us-central1-spotify-experience.cloudfunctions.net/searchGenius?q=${encodeURIComponent(
+            q
+          )}`
+        )
+        .then(response => {
+          if (
+            response.data.response.hits &&
+            response.data.response.hits.length
+          ) {
+            this.getGeniusInfo(
+              response.data.response.hits[0].result.primary_artist.id
+            );
+          } else {
+            this.genius = null;
+          }
+        });
+    },
+    getGeniusInfo(geniusArtistId) {
+      axios
+        .get(
+          `https://us-central1-spotify-experience.cloudfunctions.net/artist?id=${geniusArtistId}`
+        )
+        .then(response => {
+          this.genius = response.data.response.artist;
         });
     },
     getPopularTracksForArtist(artistId) {
@@ -103,6 +134,10 @@ export default {
   watch: {
     id() {
       this.refresh();
+    },
+    artist() {
+      this.genius = null;
+      this.geniusSearch(this.artist.name);
     }
   },
   created() {
