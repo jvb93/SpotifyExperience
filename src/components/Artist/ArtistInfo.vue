@@ -38,7 +38,7 @@
           </q-chip>
           <div
             v-if="genius"
-            class="flat-links q-pt-lg"
+            class="flat-links q-pt-lg img-small"
             v-html="genius.description.html"
           ></div>
         </div>

@@ -14,6 +14,11 @@
 .flat-links a {
   color: var(--q-color-primary) !important;
 }
+
+.img-small img {
+  max-width: 150px !important;
+  max-height: 150px !important;
+}
 </style>
 <script>
 export default {
