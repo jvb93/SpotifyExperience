@@ -88,6 +88,7 @@
               Description
             </div>
             <div
+              class="flat-links"
               style="overflow-x: auto;"
               v-html="genius.song.description.html"
             ></div>

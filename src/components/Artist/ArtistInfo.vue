@@ -36,7 +36,11 @@
           >
             {{ genre }}
           </q-chip>
-          <div v-if="genius" v-html="genius.description.html"></div>
+          <div
+            v-if="genius"
+            class="flat-links q-pt-lg"
+            v-html="genius.description.html"
+          ></div>
         </div>
       </div>
     </div>

@@ -11,6 +11,9 @@
 .font-anton {
   font-family: "Anton", sans-serif;
 }
+.flat-links a {
+  color: var(--q-color-primary) !important;
+}
 </style>
 <script>
 import { mapMutations } from "vuex";
