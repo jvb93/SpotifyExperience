@@ -15,6 +15,7 @@ export default {
     ...mapMutations(["setAccessToken"])
   },
   created() {
+    this.$q.dark.set(true);
     var token = GetTokenInfo();
     if (token) {
       this.setAccessToken(token.accessToken);

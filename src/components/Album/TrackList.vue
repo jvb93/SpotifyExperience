@@ -74,7 +74,15 @@ export default {
             }
           }
         )
-        .then(() => {})
+        .then(() => {
+          this.$q.notify({
+            progress: true,
+            color: "accent",
+            message: "Added to Queue",
+            position: "top",
+            timeout: 2500
+          });
+        })
         .catch(() => {});
     }
   },
