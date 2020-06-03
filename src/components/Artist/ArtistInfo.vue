@@ -99,9 +99,14 @@ export default {
             response.data.response.hits &&
             response.data.response.hits.length
           ) {
-            this.getGeniusInfo(
-              response.data.response.hits[0].result.primary_artist.id
+            var exactMatch = response.data.response.hits.find(
+              x => x.result.primary_artist.name.toLowerCase() == q.toLowerCase()
             );
+            if (exactMatch) {
+              this.getGeniusInfo(exactMatch.result.primary_artist.id);
+            } else {
+              this.genius = null;
+            }
           } else {
             this.genius = null;
           }

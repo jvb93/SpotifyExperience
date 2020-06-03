@@ -202,7 +202,17 @@ export default {
         .then(response => {
           this.genius.searchResults = response.data.response.hits;
           if (this.genius.searchResults && this.genius.searchResults.length) {
-            this.getGeniusSongInfo(this.genius.searchResults[0].result.id);
+            var exactMatch = this.genius.searchResults.find(
+              x =>
+                x.result.primary_artist.name.toLowerCase() ==
+                track.artists[0].name.toLowerCase()
+            );
+            if (exactMatch) {
+              this.getGeniusSongInfo(exactMatch.result.id);
+            } else {
+              this.genius.song = null;
+              this.genius.artist = null;
+            }
           } else {
             this.genius.song = null;
             this.genius.artist = null;
