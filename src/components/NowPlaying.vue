@@ -1,5 +1,5 @@
 <template>
-  <q-page v-if="$store.state.accessToken">
+  <q-page v-if="accessToken">
     <h4
       class="text-center q-mb-none font-anton text-uppercase text-italic"
       v-if="currentTrack"
@@ -132,6 +132,7 @@ import TrackControl from "@/components/Track/TrackControl";
 import TrackList from "@/components/Track/TrackList";
 import ArtistInfo from "@/components/Artist/ArtistInfo";
 import { mapMutations } from "vuex";
+import { GetTokenInfo } from "@/services/auth";
 export default {
   components: {
     TrackAnalysis,
@@ -142,6 +143,7 @@ export default {
   },
   data() {
     return {
+      accessToken: null,
       currentTrack: null,
       currentTrackFeatures: null,
       currentAlbumTracks: [],
@@ -163,7 +165,7 @@ export default {
     getCurrentTrack() {
       axios
         .get("https://api.spotify.com/v1/me/player/currently-playing", {
-          headers: { authorization: `Bearer ${this.$store.state.accessToken}` }
+          headers: { authorization: `Bearer ${this.accessToken}` }
         })
         .then(response => {
           if (response.status === 204) {
@@ -231,7 +233,7 @@ export default {
     getTracksOnAlbum(albumId) {
       axios
         .get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, {
-          headers: { authorization: `Bearer ${this.$store.state.accessToken}` }
+          headers: { authorization: `Bearer ${this.accessToken}` }
         })
         .then(response => {
           this.currentAlbumTracks = response.data.items;
@@ -241,7 +243,7 @@ export default {
     getAudioFeaturesForTrack(trackId) {
       axios
         .get(`https://api.spotify.com/v1/audio-features/${trackId}`, {
-          headers: { authorization: `Bearer ${this.$store.state.accessToken}` }
+          headers: { authorization: `Bearer ${this.accessToken}` }
         })
         .then(response => {
           this.currentTrackFeatures = response.data;
@@ -254,10 +256,16 @@ export default {
   created() {
     this.currentTrack = null;
     this.setCurrentTrackId(null);
-    this.getCurrentTrack();
+    GetTokenInfo().then(token => {
+      this.accessToken = token.accessToken;
+      this.getCurrentTrack();
+    });
 
     this.poller = setInterval(() => {
-      this.getCurrentTrack();
+      GetTokenInfo().then(token => {
+        this.accessToken = token.accessToken;
+        this.getCurrentTrack();
+      });
     }, 5000);
   }
 };

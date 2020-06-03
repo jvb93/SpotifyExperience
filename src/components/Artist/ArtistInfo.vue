@@ -55,6 +55,7 @@
 <script>
 import axios from "axios";
 import TrackList from "@/components/Track/TrackList";
+import { GetTokenInfo } from "@/services/auth.js";
 export default {
   components: {
     TrackList
@@ -71,6 +72,7 @@ export default {
   data() {
     return {
       popularTracks: [],
+      accessToken: null,
       artist: null,
       genius: null
     };
@@ -80,7 +82,7 @@ export default {
       axios
         .get(`https://api.spotify.com/v1/artists/${artistId}`, {
           headers: {
-            authorization: `Bearer ${this.$store.state.accessToken}`
+            authorization: `Bearer ${this.accessToken}`
           }
         })
         .then(response => {
@@ -127,7 +129,7 @@ export default {
           `https://api.spotify.com/v1/artists/${artistId}/top-tracks?country=from_token`,
           {
             headers: {
-              authorization: `Bearer ${this.$store.state.accessToken}`
+              authorization: `Bearer ${this.accessToken}`
             }
           }
         )
@@ -136,8 +138,11 @@ export default {
         });
     },
     refresh() {
-      this.getPopularTracksForArtist(this.id);
-      this.getArtistInfo(this.id);
+      GetTokenInfo().then(token => {
+        this.accessToken = token.accessToken;
+        this.getPopularTracksForArtist(this.id);
+        this.getArtistInfo(this.id);
+      });
     }
   },
   watch: {

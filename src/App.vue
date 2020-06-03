@@ -16,18 +16,10 @@
 }
 </style>
 <script>
-import { mapMutations } from "vuex";
-import { GetTokenInfo } from "@/services/auth.js";
 export default {
-  methods: {
-    ...mapMutations(["setAccessToken"])
-  },
+  methods: {},
   created() {
     this.$q.dark.set(true);
-    var token = GetTokenInfo();
-    if (token) {
-      this.setAccessToken(token.accessToken);
-    }
   }
 };
 </script>

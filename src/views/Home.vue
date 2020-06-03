@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <NowPlaying v-if="$store.state.accessToken" />
+    <NowPlaying v-if="accessToken" />
     <div v-else class="row items-center fullscreen">
       <div class="col text-center">
         <q-btn
@@ -20,7 +20,7 @@
 <script>
 // @ is an alias to /src
 import NowPlaying from "@/components/NowPlaying.vue";
-import { NegotiateTokenInfo } from "@/services/auth.js";
+import { NegotiateTokenInfo, GetTokenInfo } from "@/services/auth.js";
 import { mapMutations } from "vuex";
 
 export default {
@@ -30,7 +30,8 @@ export default {
   },
   data() {
     return {
-      authing: false
+      authing: false,
+      accessToken: null
     };
   },
   methods: {
@@ -52,14 +53,19 @@ width=400,height=600,left=100,top=100`;
         let code = params.get("code");
         if (code) {
           clearInterval(intv);
-          NegotiateTokenInfo(code).then(accessToken => {
-            this.setAccessToken(accessToken);
+          NegotiateTokenInfo(code).then(token => {
             w.close();
             this.authing = false;
+            this.accessToken = token;
           });
         }
       }, 250);
     }
+  },
+  created() {
+    GetTokenInfo().then(token => {
+      this.accessToken = token;
+    });
   }
 };
 </script>

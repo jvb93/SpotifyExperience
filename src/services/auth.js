@@ -8,7 +8,7 @@ export function NegotiateTokenInfo(code) {
       )
       .then(resp => {
         SetTokenInfo(resp.data);
-        resolve(resp.data.access_token);
+        resolve(resp.data);
       })
       .catch(err => {
         reject(err);
@@ -17,15 +17,23 @@ export function NegotiateTokenInfo(code) {
 }
 
 export function GetTokenInfo() {
-  let tokenInfo = null;
-  if (localStorage.tokenInfo) {
-    var parsed = JSON.parse(localStorage.tokenInfo);
-    if (parsed.expiry < new Date()) {
-      return null;
+  return new Promise((resolve, reject) => {
+    let tokenInfo = null;
+    if (localStorage.tokenInfo) {
+      var parsed = JSON.parse(localStorage.tokenInfo);
+      if (parsed.expiry < new Date()) {
+        NegotiateTokenInfo(parsed.refreshToken)
+          .then(t => {
+            resolve(t);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      }
+      tokenInfo = parsed;
     }
-    tokenInfo = parsed;
-  }
-  return tokenInfo;
+    resolve(tokenInfo);
+  });
 }
 
 export function SetTokenInfo(rawToken) {
