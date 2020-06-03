@@ -1,6 +1,11 @@
 <template>
   <q-page v-if="$store.state.accessToken">
-    <h4 class="text-center q-mb-none" v-if="currentTrack">Now Playing</h4>
+    <h4
+      class="text-center q-mb-none font-anton text-uppercase text-italic"
+      v-if="currentTrack"
+    >
+      Now Playing
+    </h4>
     <div class="row" v-if="currentTrack && currentTrackFeatures">
       <div class="col">
         <q-card flat bordered class="q-ma-lg">
@@ -36,7 +41,9 @@
     <div class="row justify-center window-height items-center" v-else>
       <div class="text-center">
         <q-spinner-audio color="primary" size="3em" />
-        <div class="text-h5">Looking for Audio...</div>
+        <div class="text-h5 font-anton text-uppercase text-italic">
+          Looking for Audio...
+        </div>
         <div class="text-subtitle1">
           Please note only music is supported at this time
         </div>
@@ -50,7 +57,9 @@
       >
         <q-card flat bordered class="q-ma-lg">
           <q-card-section>
-            <div class="text-h5">Track Analysis</div>
+            <div class="text-h5 font-anton text-uppercase text-italic">
+              Track Analysis
+            </div>
             <track-analysis :features="currentTrackFeatures" />
           </q-card-section>
         </q-card>
@@ -58,14 +67,18 @@
       <div class="col-sm-12 col-md-6" v-if="genius.song">
         <q-card flat bordered class="q-ma-lg">
           <q-card-section v-if="genius.song.description.html != '<p>?</p>'">
-            <div class="text-h6">Description</div>
+            <div class="text-h5 font-anton text-uppercase text-italic">
+              Description
+            </div>
             <div
               style="overflow-x: auto;"
               v-html="genius.song.description.html"
             ></div>
           </q-card-section>
           <q-card-section>
-            <div class="text-h6">Facts</div>
+            <div class="text-h5 font-anton text-uppercase text-italic">
+              Facts
+            </div>
             <ul>
               <li v-if="genius.song.release_date_for_display">
                 Release Date: {{ genius.song.release_date_for_display }}
