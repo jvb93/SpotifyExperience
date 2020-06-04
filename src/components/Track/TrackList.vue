@@ -43,9 +43,11 @@
 
 <script>
 import axios from "axios";
+import { GetTokenInfo } from "@/services/auth.js";
 export default {
   data() {
     return {
+      accessToken: null,
       initialPagination: {
         rowsPerPage: 20
       },
@@ -79,27 +81,30 @@ export default {
   },
   methods: {
     enqueue(trackId) {
-      axios
-        .post(
-          `https://api.spotify.com/v1/me/player/queue?uri=${trackId}`,
-          null,
-          {
-            headers: {
-              authorization: `Bearer ${this.$store.state.accessToken}`
+      GetTokenInfo().then(token => {
+        this.accessToken = token.accessToken;
+        axios
+          .post(
+            `https://api.spotify.com/v1/me/player/queue?uri=${trackId}`,
+            null,
+            {
+              headers: {
+                authorization: `Bearer ${this.accessToken}`
+              }
             }
-          }
-        )
-        .then(() => {
-          var track = this.tracks.find(x => x.uri == trackId);
-          this.$q.notify({
-            progress: true,
-            color: "accent",
-            message: `Added "${track.name}" to your play queue`,
-            position: "top",
-            timeout: 2500
-          });
-        })
-        .catch(() => {});
+          )
+          .then(() => {
+            var track = this.tracks.find(x => x.uri == trackId);
+            this.$q.notify({
+              progress: true,
+              color: "accent",
+              message: `Added "${track.name}" to your play queue`,
+              position: "top",
+              timeout: 2500
+            });
+          })
+          .catch(() => {});
+      });
     }
   },
   props: {

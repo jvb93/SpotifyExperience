@@ -1,10 +1,14 @@
 const axios = require("axios");
-export function NegotiateTokenInfo(code) {
+export function NegotiateTokenInfo(code, isRefresh) {
   return new Promise((resolve, reject) => {
     axios
       .post(
         "https://us-central1-spotify-experience.cloudfunctions.net/authenticate",
-        { code: code, redirect_uri: process.env.VUE_APP_REDIRECTURL }
+        {
+          code: code,
+          redirect_uri: process.env.VUE_APP_REDIRECTURL,
+          grant_type: isRefresh ? "refresh_token" : "authorization_code"
+        }
       )
       .then(resp => {
         SetTokenInfo(resp.data);
@@ -21,8 +25,8 @@ export function GetTokenInfo() {
     let tokenInfo = null;
     if (localStorage.tokenInfo) {
       var parsed = JSON.parse(localStorage.tokenInfo);
-      if (parsed.expiry < new Date()) {
-        NegotiateTokenInfo(parsed.refreshToken)
+      if (new Date(parsed.expiry) < new Date()) {
+        NegotiateTokenInfo(parsed.refreshToken, true)
           .then(t => {
             resolve(t);
           })

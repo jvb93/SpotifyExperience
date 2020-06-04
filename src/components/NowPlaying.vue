@@ -159,9 +159,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setCurrentTrackId"]),
-    stopPolling() {
-      clearInterval(this.poller);
-    },
+
     getCurrentTrack() {
       axios
         .get("https://api.spotify.com/v1/me/player/currently-playing", {
@@ -183,9 +181,7 @@ export default {
             this.setCurrentTrackId(null);
           }
         })
-        .catch(() => {
-          this.stopPolling();
-        });
+        .catch(() => {});
     },
     getAdditionalTrackInformation(spotifyTrack) {
       this.getAudioFeaturesForTrack(spotifyTrack.item.id);
@@ -248,9 +244,7 @@ export default {
         .then(response => {
           this.currentTrackFeatures = response.data;
         })
-        .catch(() => {
-          this.stopPolling();
-        });
+        .catch(() => {});
     }
   },
   created() {

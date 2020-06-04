@@ -11,10 +11,15 @@ exports.authenticate = functions.https.onRequest((request, response) => {
     let data = request.body;
 
     let authRequest = {
-      grant_type: "authorization_code",
-      code: data.code,
+      grant_type: data.grant_type,
       redirect_uri: data.redirect_uri
     };
+
+    if (data.grant_type.toLowerCase() === "refresh_token") {
+      authRequest.refresh_token = data.code;
+    } else {
+      authRequest.code = data.code;
+    }
 
     let encoded = qs.stringify(authRequest);
     let concatTokens = `${functions.config().spotify.clientid}:${
