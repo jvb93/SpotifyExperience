@@ -6,14 +6,16 @@
     <div v-if="artist" class="q-mb-md">
       <div class="row">
         <q-img
-          class="col q-ma-md rounded-borders"
+          class="col-sm-12 col-md-4 rounded-borders"
           transition="fade"
+          :ratio="1"
+          style="max-height: 150px; max-width:150px;"
           :src="artist.images[0].url"
-          style="max-width:150px; max-height:150px;"
         />
-        <div class="col q-ma-md">
+        <div class="col-sm-12 q-pa-md col-md-8">
           <div class="text-h6">
             {{ artist.name }}
+
             <q-circular-progress
               show-value
               class="q-ma-md float-right"
@@ -36,6 +38,9 @@
           >
             {{ genre }}
           </q-chip>
+          <div class="text-overline">
+            {{ artist.followers.total }} followers
+          </div>
           <div
             v-if="genius"
             class="flat-links q-pt-lg img-small"

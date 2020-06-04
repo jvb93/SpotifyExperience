@@ -19,6 +19,9 @@
   max-width: 150px !important;
   max-height: 150px !important;
 }
+.img-small iframe {
+  display: none;
+}
 </style>
 <script>
 export default {
