@@ -1,6 +1,13 @@
 <template>
   <div class="home">
-    <NowPlaying v-if="accessToken" />
+    <template v-if="accessToken">
+      <NowPlaying />
+      <info :dialog="dialog" @close="dialog = false" />
+      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+        <q-btn fab icon="help_outline" color="accent" @click="dialog = true" />
+      </q-page-sticky>
+    </template>
+
     <div v-else class="row items-center fullscreen">
       <div class="col text-center">
         <q-btn
@@ -20,23 +27,26 @@
 <script>
 // @ is an alias to /src
 import NowPlaying from "@/components/NowPlaying.vue";
+import Info from "@/components/Misc/Info.vue";
 import { NegotiateTokenInfo, GetTokenInfo } from "@/services/auth.js";
 import { mapMutations } from "vuex";
 
 export default {
   name: "home",
   components: {
-    NowPlaying
+    NowPlaying,
+    Info
   },
   data() {
     return {
       authing: false,
-      accessToken: null
+      accessToken: null,
+      dialog: false
     };
   },
   methods: {
     ...mapMutations(["setAccessToken"]),
-
+    hideDialog() {},
     authorize() {
       this.authing = true;
       let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,

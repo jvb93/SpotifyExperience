@@ -11,7 +11,7 @@ export function NegotiateTokenInfo(code, isRefresh) {
         }
       )
       .then(resp => {
-        SetTokenInfo(resp.data);
+        SetTokenInfo(resp.data, isRefresh ? code : null);
         resolve(resp.data);
       })
       .catch(err => {
@@ -40,10 +40,10 @@ export function GetTokenInfo() {
   });
 }
 
-export function SetTokenInfo(rawToken) {
+export function SetTokenInfo(rawToken, refreshToken) {
   var token = new TokenInfo(
     rawToken.access_token,
-    rawToken.refresh_token,
+    refreshToken ? refreshToken : rawToken.refresh_token,
     rawToken.expires_in
   );
   localStorage.tokenInfo = JSON.stringify(token);
