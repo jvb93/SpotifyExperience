@@ -74,13 +74,13 @@
         </ul>
       </q-card-section>
       <q-separator dark inset />
-      <q-card-actions>
+      <q-card-actions class="justify-end">
         <q-btn
           type="a"
           target="_blank"
+          outline
           size="sm"
           href="https://github.com/jvb93/SpotifyExperience"
-          flat
         >
           Made with ❤ by @jvb93
         </q-btn>

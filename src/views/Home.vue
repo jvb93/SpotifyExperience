@@ -4,7 +4,12 @@
       <NowPlaying />
       <info :dialog="dialog" @close="dialog = false" />
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
-        <q-btn fab icon="help_outline" color="accent" @click="dialog = true" />
+        <q-btn
+          fab-mini
+          icon="help_outline"
+          color="accent"
+          @click="dialog = true"
+        />
       </q-page-sticky>
     </template>
 
