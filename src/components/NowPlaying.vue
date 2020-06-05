@@ -205,11 +205,18 @@ export default {
         .then(response => {
           this.genius.searchResults = response.data.response.hits;
           if (this.genius.searchResults && this.genius.searchResults.length) {
-            var exactMatch = this.genius.searchResults.find(
-              x =>
-                x.result.primary_artist.name.toLowerCase() ==
-                track.artists[0].name.toLowerCase()
-            );
+            var exactMatch = this.genius.searchResults.find(x => {
+              let sanitizedGeniusName = x.result.primary_artist.name
+                .toLowerCase()
+                .replace(/[^a-z0-9]/g, "");
+
+              let sanitizedSpotifyName = track.artists[0].name
+                .toLowerCase()
+                .replace(/[^a-z0-9]/g, "");
+
+              let equal = sanitizedGeniusName === sanitizedSpotifyName;
+              return equal;
+            });
             if (exactMatch) {
               this.getGeniusSongInfo(exactMatch.result.id);
             } else {

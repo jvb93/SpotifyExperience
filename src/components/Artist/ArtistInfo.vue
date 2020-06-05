@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-h5 font-anton text-uppercase text-italic">
+    <div class="text-h5 font-anton text-uppercase text-italic q-mb-md">
       Artist Info
     </div>
     <div v-if="artist" class="q-mb-md">
@@ -106,9 +106,18 @@ export default {
             response.data.response.hits &&
             response.data.response.hits.length
           ) {
-            var exactMatch = response.data.response.hits.find(
-              x => x.result.primary_artist.name.toLowerCase() == q.toLowerCase()
-            );
+            var exactMatch = response.data.response.hits.find(x => {
+              let sanitizedGeniusName = x.result.primary_artist.name
+                .toLowerCase()
+                .replace(/[^a-z0-9]/g, "");
+
+              let sanitizedSpotifyName = q
+                .toLowerCase()
+                .replace(/[^a-z0-9]/g, "");
+
+              let equal = sanitizedGeniusName === sanitizedSpotifyName;
+              return equal;
+            });
             if (exactMatch) {
               this.getGeniusInfo(exactMatch.result.primary_artist.id);
             } else {
