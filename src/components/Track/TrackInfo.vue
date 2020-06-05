@@ -12,7 +12,9 @@
     </div>
     <div class="row">
       <div class="col">
-        <div class="text-h6">{{ track.name }}</div>
+        <div class="text-h5 font-anton text-uppercase text-italic">
+          {{ track.name }}
+        </div>
         <div class="text-subtitle2">
           {{ artistNames(track) }}
         </div>
