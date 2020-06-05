@@ -6,6 +6,7 @@
     :data="tracks"
     :columns="columns"
     :pagination="initialPagination"
+    :visible-columns="visibleColumns"
     row-key="id"
   >
     <template v-slot:body-cell-id="props">
@@ -18,7 +19,7 @@
       </q-td>
     </template>
     <template v-slot:body-cell-uri="props">
-      <q-td :props="props">
+      <q-td :props="props" auto-width>
         <div>
           <q-btn
             round
@@ -36,6 +37,15 @@
             >
           </q-btn>
         </div>
+      </q-td>
+    </template>
+    <template v-slot:body-cell-popularity="props">
+      <q-td :props="props" auto-width>
+        <q-linear-progress
+          size="md"
+          :value="props.value / 100"
+          style="max-width:50px;"
+        />
       </q-td>
     </template>
   </q-table>
@@ -69,6 +79,15 @@ export default {
           sortable: true
         },
         {
+          name: "popularity",
+          required: false,
+          label: "Popularity",
+          align: "left",
+          field: row => row.popularity,
+          format: val => `${val}`,
+          sortable: true
+        },
+        {
           name: "uri",
           required: true,
           label: "",
@@ -78,6 +97,16 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    visibleColumns() {
+      return [
+        "id",
+        "name",
+        this.tracks.find(x => x.popularity) ? "popularity" : "",
+        "uri"
+      ];
+    }
   },
   methods: {
     enqueue(trackId) {
