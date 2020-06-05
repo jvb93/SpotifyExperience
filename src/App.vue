@@ -22,6 +22,11 @@
 .img-small iframe {
   display: none;
 }
+.q-table__title {
+  font-family: "Anton", sans-serif;
+  font-style: italic;
+  text-transform: uppercase;
+}
 </style>
 <script>
 export default {

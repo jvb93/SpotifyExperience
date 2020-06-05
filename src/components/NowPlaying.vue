@@ -62,7 +62,9 @@
                 <q-card-section
                   v-if="genius.song.description.html != '<p>?</p>'"
                 >
-                  <div class="text-h5 font-anton text-uppercase text-italic">
+                  <div
+                    class="text-h5 font-anton text-uppercase text-italic q-mb-md"
+                  >
                     Track Description
                   </div>
                   <div
@@ -72,7 +74,13 @@
                   ></div>
                 </q-card-section>
                 <q-card-section>
-                  <div class="text-h5 font-anton text-uppercase text-italic">
+                  <div
+                    class="text-h5 font-anton text-uppercase text-italic"
+                    v-if="
+                      genius.song.release_date_for_display ||
+                        genius.song.recording_location
+                    "
+                  >
                     Facts
                   </div>
                   <ul>
