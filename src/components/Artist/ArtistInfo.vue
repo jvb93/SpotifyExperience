@@ -42,7 +42,7 @@
             {{ artist.followers.total }} followers
           </div>
           <div
-            v-if="genius"
+            v-if="genius && genius.description.html != '<p>?</p>'"
             class="flat-links q-pt-lg img-small"
             v-html="genius.description.html"
           ></div>
