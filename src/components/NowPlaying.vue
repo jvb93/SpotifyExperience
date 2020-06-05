@@ -214,16 +214,13 @@ export default {
           this.genius.searchResults = response.data.response.hits;
           if (this.genius.searchResults && this.genius.searchResults.length) {
             var exactMatch = this.genius.searchResults.find(x => {
-              let sanitizedGeniusName = x.result.primary_artist.name
-                .toLowerCase()
-                .replace(/[^a-z0-9]/g, "");
-
-              let sanitizedSpotifyName = track.artists[0].name
-                .toLowerCase()
-                .replace(/[^a-z0-9]/g, "");
-
-              let equal = sanitizedGeniusName === sanitizedSpotifyName;
-              return equal;
+              let sanitizedGeniusName = this.sanitizeString(
+                x.result.primary_artist.name
+              );
+              let sanitizedSpotifyName = this.sanitizeString(
+                track.artists[0].name
+              );
+              return sanitizedGeniusName === sanitizedSpotifyName;
             });
             if (exactMatch) {
               this.getGeniusSongInfo(exactMatch.result.id);
@@ -265,6 +262,9 @@ export default {
           this.currentTrackFeatures = response.data;
         })
         .catch(() => {});
+    },
+    sanitizeString(inputString) {
+      return inputString.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g, "");
     }
   },
   created() {
