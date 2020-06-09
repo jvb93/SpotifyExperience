@@ -5,7 +5,7 @@
         <q-img
           :src="track.album.images[0].url"
           transition="fade"
-          class="rounded-borders"
+          class="rounded-borders q-mb-md"
           style="max-width: 300px; max-height:300px;"
         ></q-img>
       </div>
