@@ -130,7 +130,10 @@
           <div class="text-h5 font-anton text-uppercase text-italic">
             Looking for Audio...
           </div>
-          <div class="text-subtitle1">
+          <div class="text-subtitle2">
+            Play something on Spotify!
+          </div>
+          <div class="text-caption text-weight-thin">
             Please note only music is supported at this time
           </div>
         </div>
