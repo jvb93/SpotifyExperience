@@ -2,14 +2,11 @@ const axios = require("axios");
 export function NegotiateTokenInfo(code, isRefresh) {
   return new Promise((resolve, reject) => {
     axios
-      .post(
-        "https://us-central1-spotify-experience.cloudfunctions.net/authenticate",
-        {
-          code: code,
-          redirect_uri: process.env.VUE_APP_REDIRECTURL,
-          grant_type: isRefresh ? "refresh_token" : "authorization_code"
-        }
-      )
+      .post(process.env.VUE_APP_AUTHURL, {
+        code: code,
+        redirect_uri: process.env.VUE_APP_REDIRECTURL,
+        grant_type: isRefresh ? "refresh_token" : "authorization_code"
+      })
       .then(resp => {
         SetTokenInfo(resp.data, isRefresh ? code : null);
         resolve(resp.data);
