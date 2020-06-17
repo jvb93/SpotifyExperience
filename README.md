@@ -1,4 +1,7 @@
 # The Spotify Experience
+
+[Demo Site](https://spotify-experience.web.app) | [Project Write-Up](https://vanbibber.org/Projects/SpotifyExperience.html)
+
 ![Node.js CI](https://github.com/jvb93/SpotifyExperience/workflows/Node.js%20CI/badge.svg)
 
 ## Running Locally 
