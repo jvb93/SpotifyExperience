@@ -97,9 +97,9 @@ export default {
     geniusSearch(q) {
       axios
         .get(
-          `https://us-central1-spotify-experience.cloudfunctions.net/searchGenius?q=${encodeURIComponent(
-            q
-          )}`
+          `${
+            process.env.VUE_APP_FIREBASE_FUNCTIONS_BASE
+          }/searchGenius?q=${encodeURIComponent(q)}`
         )
         .then(response => {
           if (
@@ -131,7 +131,7 @@ export default {
     getGeniusInfo(geniusArtistId) {
       axios
         .get(
-          `https://us-central1-spotify-experience.cloudfunctions.net/artist?id=${geniusArtistId}`
+          `${process.env.VUE_APP_FIREBASE_FUNCTIONS_BASE}/artist?id=${geniusArtistId}`
         )
         .then(response => {
           this.genius = response.data.response.artist;

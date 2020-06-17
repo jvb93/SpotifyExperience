@@ -2,7 +2,7 @@ const axios = require("axios");
 export function NegotiateTokenInfo(code, isRefresh) {
   return new Promise((resolve, reject) => {
     axios
-      .post(process.env.VUE_APP_AUTHURL, {
+      .post(`${process.env.VUE_APP_FIREBASE_FUNCTIONS_BASE}/authenticate`, {
         code: code,
         redirect_uri: process.env.VUE_APP_REDIRECTURL,
         grant_type: isRefresh ? "refresh_token" : "authorization_code"

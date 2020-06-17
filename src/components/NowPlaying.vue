@@ -224,9 +224,9 @@ export default {
       var q = `${track.name} ${track.artists[0].name}`;
       axios
         .get(
-          `https://us-central1-spotify-experience.cloudfunctions.net/searchGenius?q=${encodeURIComponent(
-            q
-          )}`
+          `${
+            process.env.VUE_APP_FIREBASE_FUNCTIONS_BASE
+          }/searchGenius?q=${encodeURIComponent(q)}`
         )
         .then(response => {
           this.genius.searchResults = response.data.response.hits;
@@ -255,7 +255,7 @@ export default {
     getGeniusSongInfo(geniusSongId) {
       axios
         .get(
-          `https://us-central1-spotify-experience.cloudfunctions.net/song?id=${geniusSongId}`
+          `${process.env.VUE_APP_FIREBASE_FUNCTIONS_BASE}/song?id=${geniusSongId}`
         )
         .then(response => {
           this.genius.song = response.data.response.song;

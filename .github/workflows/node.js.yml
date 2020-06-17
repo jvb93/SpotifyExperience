@@ -30,7 +30,7 @@ jobs:
         VUE_APP_SPOTIFYCLIENTID: ${{ secrets.VUE_APP_SPOTIFYCLIENTID }}
         VUE_APP_SPOTIFYSCOPE: ${{ secrets.VUE_APP_SPOTIFYSCOPE }}
         VUE_APP_REDIRECTURL: ${{ secrets.VUE_APP_REDIRECTURL }}
-        VUE_APP_AUTHURL: ${{ secrets.VUE_APP_AUTHURL }}
+        VUE_APP_FIREBASE_FUNCTIONS_BASE: ${{ secrets.VUE_APP_FIREBASE_FUNCTIONS_BASE }}
     - name: Deploy to Firebase
       uses: lowply/deploy-firebase@v0.0.2
       env:
